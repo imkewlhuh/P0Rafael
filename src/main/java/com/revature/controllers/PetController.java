@@ -39,15 +39,81 @@ public class PetController {
     }
 
     public static void handleGetPet(Context ctx) {
-        ctx.result("Found pet");
+
+        String s = ctx.pathParam("id");
+        int id;
+
+        try {
+            id = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            ctx.status(400);
+            logger.warn("Invalid id: " + s);
+            return;
+        }
+
+        Pet pet = petService.getPetById(id);
+
+        if (pet != null) {
+            ctx.status(200);
+            ctx.json(pet);
+            logger.info("Pet found: " + pet.toString());
+        } else {
+            ctx.status(404);
+            logger.warn("Pet not found. id given: " + id);
+        }
+
     }
 
     public static void handleUpdatePet(Context ctx) {
-        ctx.result("Pet updated");
+
+        String s = ctx.pathParam("id");
+        int id;
+
+        try {
+            id = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            ctx.status(400);
+            logger.warn("Invalid id: " + s);
+            return;
+        }
+
+        Pet pet = ctx.bodyAsClass(Pet.class);
+
+        boolean updatedPet = petService.updatePet(id, pet.getName(), pet.getSpecies(), pet.getUser_id_fk());
+
+        if (updatedPet) {
+            ctx.status(200);
+            logger.info("Pet: " + pet.getPet_id() + " was updated to " + pet.toString());
+        } else {
+            ctx.status(400);
+            logger.warn("Could not update pet");
+        }
+
     }
 
     public static void handleDeletePet(Context ctx) {
-        ctx.result("Pet removed");
+
+        String s = ctx.pathParam("id");
+        int id;
+
+        try {
+            id = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            ctx.status(400);
+            logger.warn("Invalid id: " + s);
+            return;
+        }
+
+        boolean deletedPet = petService.deletePet(id);
+
+        if (deletedPet) {
+            ctx.status(200);
+            logger.info("Pet #" + id + " was deleted");
+        } else {
+            ctx.status(400);
+            logger.warn("Could not delete pet");
+        }
+
     }
 
 }

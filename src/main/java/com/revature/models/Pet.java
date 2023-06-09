@@ -15,6 +15,14 @@ public class Pet {
     public Pet() {
     };
 
+    public Pet(int pet_id, String name, String species, User user, int user_id_fk) {
+        this.pet_id = pet_id;
+        this.name = name;
+        this.species = species;
+        this.user = user;
+        this.user_id_fk = user_id_fk;
+    }
+
     public Pet(int pet_id, String name, String species, User user) {
         this.pet_id = pet_id;
         this.name = name;
@@ -76,7 +84,7 @@ public class Pet {
 
     @Override
     public String toString() {
-        return "Pet{" +
+        return "\n Pet{" +
                 "pet_id=" + pet_id +
                 ", name='" + name + '\'' +
                 ", species='" + species + '\'' +

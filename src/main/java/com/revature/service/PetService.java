@@ -18,4 +18,34 @@ public class PetService {
         return petDao.insertPet(pet);
     }
 
+    public Pet getPetById(int id) {
+
+        if (id > 0) {
+            return petDao.getPetById(id);
+        } else {
+            return null;
+        }
+
+    }
+
+    public boolean updatePet(int id, String name, String species, int user_id_fk) {
+
+        if (id <= 0 || user_id_fk <= 0 || name == null || name == "" || species == null || species == "") {
+            return false;
+        } else {
+            return petDao.updatePet(id, name, species, user_id_fk);
+        }
+
+    }
+
+    public boolean deletePet(int id) {
+
+        if (id > 0) {
+            return petDao.deletePet(id);
+        } else {
+            return false;
+        }
+
+    }
+
 }

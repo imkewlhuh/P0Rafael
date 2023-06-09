@@ -3,12 +3,22 @@ package com.revature.service;
 import com.revature.daos.UserDAOInterface;
 import com.revature.models.User;
 
+import java.util.ArrayList;
+
 public class UserService {
 
     private UserDAOInterface userDao;
 
     public UserService(UserDAOInterface userDao) {
         this.userDao = userDao;
+    }
+
+    public ArrayList<User> getAllUsers() {
+        return userDao.getAllUsers();
+    }
+
+    public User createNewUser(User user) {
+        return userDao.insertUser(user);
     }
 
     public User getUserById(int id) {
@@ -21,13 +31,24 @@ public class UserService {
 
     }
 
-    public boolean updateAge(int age, int id) {
+    public boolean updateUser(int id, String name, int age) {
 
-        if (age <= 0 && id <= 0) {
+        if (age <= 0 || id <= 0 || name == null || name == "") {
             return false;
         } else {
-            return userDao.updateUserAge(age, id);
+            return userDao.updateUser(id, name, age);
         }
 
     }
+
+    public boolean deleteUser(int id) {
+
+        if (id > 0) {
+            return userDao.deleteUser(id);
+        } else {
+            return false;
+        }
+
+    }
+
 }

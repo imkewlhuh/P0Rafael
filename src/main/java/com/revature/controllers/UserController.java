@@ -16,11 +16,27 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public static void handleGetAllUsers(Context ctx) {
-        ctx.status(500);
+        ArrayList<User> users = userService.getAllUsers();
+
+        ctx.status(200);
+        ctx.json(users);
     }
 
     public static void handleNewUser(Context ctx) {
-        ctx.status(400);
+
+        User user = ctx.bodyAsClass(User.class);
+
+        User newUser = userService.createNewUser(user);
+
+        if (newUser != null) {
+            ctx.status(201);
+            ctx.json(newUser);
+            logger.info("User added: " + newUser.toString());
+        } else {
+            ctx.status(400);
+            logger.warn("Failed to add user");
+        }
+
     }
 
     public static void handleGetUser(Context ctx) {
@@ -49,23 +65,56 @@ public class UserController {
 
     }
 
-    public static void handleUpdateAge(Context ctx) {
+    public static void handleUpdateUser(Context ctx) {
+
+        String s = ctx.pathParam("id");
+        int id;
+
+        try {
+            id = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            ctx.status(400);
+            logger.warn("Invalid id: " + s);
+            return;
+        }
 
         User user = ctx.bodyAsClass(User.class);
 
-        boolean updatedUser = userService.updateAge(user.getAge(), user.getUser_id());
+        boolean updatedUser = userService.updateUser(id, user.getName(), user.getAge());
 
         if (updatedUser) {
             ctx.status(200);
-            logger.info("User: " + user.getUser_id() + " was updated to the age of " + user.getAge());
+            logger.info("User: " + id + " was updated to " + user.toString());
         } else {
             ctx.status(400);
+            logger.warn("Could not update user");
         }
 
     }
 
     public static void handleDeleteUser(Context ctx) {
-        ctx.status(500);
+
+        String s = ctx.pathParam("id");
+        int id;
+
+        try {
+            id = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            ctx.status(400);
+            logger.warn("Invalid id: " + s);
+            return;
+        }
+
+        boolean deletedUser = userService.deleteUser(id);
+
+        if (deletedUser) {
+            ctx.status(200);
+            logger.info("User #" + id + " was deleted");
+        } else {
+            ctx.status(400);
+            logger.warn("Could not delete user");
+        }
+
     }
 
 }

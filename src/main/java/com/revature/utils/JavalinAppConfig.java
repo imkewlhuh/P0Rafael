@@ -57,7 +57,7 @@ public class JavalinAppConfig {
 
                     path("{id}", () -> {
                         get(UserController::handleGetUser);
-                        put(UserController::handleUpdateAge);
+                        put(UserController::handleUpdateUser);
                         delete(UserController::handleDeleteUser);
                     });
 
