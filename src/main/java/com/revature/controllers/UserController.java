@@ -20,6 +20,7 @@ public class UserController {
 
         ctx.status(200);
         ctx.json(users);
+        logger.info("Users found! Now it's a party");
     }
 
     public static void handleNewUser(Context ctx) {
@@ -80,12 +81,16 @@ public class UserController {
 
         User user = ctx.bodyAsClass(User.class);
 
-        boolean updatedUser = userService.updateUser(id, user.getName(), user.getAge());
+        if (userService.getUserById(id) != null) {
 
-        if (updatedUser) {
-            ctx.status(200);
-            logger.info("User: " + id + " was updated to " + user.toString());
-        } else {
+            boolean updatedUser = userService.updateUser(id, user.getName(), user.getAge());
+
+            if (updatedUser) {
+                ctx.status(200);
+                logger.info("User: " + id + " was updated to " + user.toString() + " Reality is what you make it");
+            }
+
+        }else {
             ctx.status(400);
             logger.warn("Could not update user");
         }
@@ -105,11 +110,15 @@ public class UserController {
             return;
         }
 
-        boolean deletedUser = userService.deleteUser(id);
+        if (userService.getUserById(id) != null) {
 
-        if (deletedUser) {
-            ctx.status(200);
-            logger.info("User #" + id + " was deleted");
+            boolean deletedUser = userService.deleteUser(id);
+
+            if (deletedUser) {
+                ctx.status(200);
+                logger.info("User #" + id + " was deleted. Press F to pay respects");
+            }
+
         } else {
             ctx.status(400);
             logger.warn("Could not delete user");

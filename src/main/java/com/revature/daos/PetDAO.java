@@ -94,7 +94,6 @@ public class PetDAO implements PetDAOInterface {
                         rs.getInt("user_id_fk")
                 );
 
-                System.out.println("Pet found!");
                 return pet;
             }
 
@@ -122,7 +121,6 @@ public class PetDAO implements PetDAOInterface {
 
             ps.executeUpdate();
 
-            System.out.println("Pet successfully updated");
             return true;
 
         } catch (SQLException e) {
@@ -146,7 +144,6 @@ public class PetDAO implements PetDAOInterface {
 
             ps.executeUpdate();
 
-            System.out.println("Pet disintegrated. You will be judged for your crimes.");
             return true;
 
         } catch (SQLException e) {
@@ -155,5 +152,33 @@ public class PetDAO implements PetDAOInterface {
         }
 
         return false;
+    }
+
+    @Override
+    public ArrayList<String> helloWorld() {
+        try(Connection conn = ConnectionUtil.getConnection()) {
+            String sql = "SELECT name, species FROM Pet ORDER BY species, name ASC";
+
+            Statement s = conn.createStatement();
+
+            ResultSet rs = s.executeQuery(sql);
+
+            ArrayList<String> pets = new ArrayList<>();
+
+            while (rs.next()) {
+                String pet = rs.getString("name") + ", " + rs.getString("species");
+
+                pets.add(pet);
+
+            }
+
+            return pets;
+
+        } catch (SQLException e) {
+            System.out.println("You entered the room and no one greeted you.");
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

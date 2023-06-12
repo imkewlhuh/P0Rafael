@@ -42,6 +42,11 @@ public class Pet {
         this.user_id_fk = user_id_fk;
     };
 
+    public Pet(String name, String species) {
+        this.name = name;
+        this.species = species;
+    }
+
     public int getPet_id() {
         return pet_id;
     };

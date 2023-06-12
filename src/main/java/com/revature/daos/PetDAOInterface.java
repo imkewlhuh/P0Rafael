@@ -16,4 +16,6 @@ public interface PetDAOInterface {
 
     boolean deletePet(int id);
 
+    ArrayList<String> helloWorld();
+
 }

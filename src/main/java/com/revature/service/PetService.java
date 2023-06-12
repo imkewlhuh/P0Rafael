@@ -5,6 +5,7 @@ import com.revature.daos.PetDAOInterface;
 import com.revature.models.Pet;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PetService {
 
@@ -15,7 +16,11 @@ public class PetService {
     }
 
     public Pet addNewPet(Pet pet) {
-        return petDao.insertPet(pet);
+        if (Objects.equals(pet.getName(), "") || Objects.equals(pet.getSpecies(), "") || pet.getUser_id_fk() <= 0) {
+            return null;
+        } else {
+            return petDao.insertPet(pet);
+        }
     }
 
     public Pet getPetById(int id) {
@@ -30,7 +35,7 @@ public class PetService {
 
     public boolean updatePet(int id, String name, String species, int user_id_fk) {
 
-        if (id <= 0 || user_id_fk <= 0 || name == null || name == "" || species == null || species == "") {
+        if (id <= 0 || user_id_fk <= 0 || name == null || name.equals("") || species == null || species.equals("")) {
             return false;
         } else {
             return petDao.updatePet(id, name, species, user_id_fk);
@@ -46,6 +51,10 @@ public class PetService {
             return false;
         }
 
+    }
+
+    public ArrayList<String> helloWorld() {
+        return petDao.helloWorld();
     }
 
 }

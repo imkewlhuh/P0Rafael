@@ -43,6 +43,8 @@ public class JavalinAppConfig {
                     get(PetController::handleGetAllPets);
                     post(PetController::handleAddPet);
 
+                    path("greeting", () -> get(PetController::helloWorld));
+
                     path("{id}", () -> {
                         get(PetController::handleGetPet);
                         put(PetController::handleUpdatePet);

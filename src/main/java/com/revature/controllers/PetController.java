@@ -19,6 +19,7 @@ public class PetController {
 
         ctx.status(200);
         ctx.json(pets);
+        logger.info("All Pets found!");
     }
 
     public static void handleAddPet(Context ctx) {
@@ -79,12 +80,16 @@ public class PetController {
 
         Pet pet = ctx.bodyAsClass(Pet.class);
 
-        boolean updatedPet = petService.updatePet(id, pet.getName(), pet.getSpecies(), pet.getUser_id_fk());
+        if (petService.getPetById(id) != null) {
 
-        if (updatedPet) {
-            ctx.status(200);
-            logger.info("Pet: " + pet.getPet_id() + " was updated to " + pet.toString());
-        } else {
+            boolean updatedPet = petService.updatePet(id, pet.getName(), pet.getSpecies(), pet.getUser_id_fk());
+
+            if (updatedPet) {
+                ctx.status(200);
+                logger.info("Pet: " + id + " was updated to " + pet.toString());
+            }
+
+        }else {
             ctx.status(400);
             logger.warn("Could not update pet");
         }
@@ -104,16 +109,28 @@ public class PetController {
             return;
         }
 
-        boolean deletedPet = petService.deletePet(id);
+        if (petService.getPetById(id) != null) {
 
-        if (deletedPet) {
-            ctx.status(200);
-            logger.info("Pet #" + id + " was deleted");
+            boolean deletedPet = petService.deletePet(id);
+
+            if (deletedPet) {
+                ctx.status(200);
+                logger.info("Pet #" + id + " was disintegrated. You will be judged for your crimes.");
+            }
+
         } else {
             ctx.status(400);
             logger.warn("Could not delete pet");
         }
 
+    }
+
+    public static void helloWorld(Context ctx) {
+        ArrayList<String> pets = petService.helloWorld();
+
+        ctx.status(200);
+        ctx.json(pets);
+        logger.info(":D");
     }
 
 }

@@ -84,7 +84,6 @@ public class UserDAO implements UserDAOInterface {
                         rs.getInt("age")
                 );
 
-                System.out.println("User found!");
                 return user;
             }
 
@@ -111,7 +110,6 @@ public class UserDAO implements UserDAOInterface {
 
             ps.executeUpdate();
 
-            System.out.println("User successfully updated! Reality is what you make it");
             return true;
 
         } catch (SQLException e) {
@@ -135,7 +133,6 @@ public class UserDAO implements UserDAOInterface {
 
             ps.executeUpdate();
 
-            System.out.println("User deleted. Press F to pay respects");
             return true;
 
     } catch (SQLException e) {

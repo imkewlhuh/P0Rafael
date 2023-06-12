@@ -4,6 +4,7 @@ import com.revature.daos.UserDAOInterface;
 import com.revature.models.User;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UserService {
 
@@ -18,7 +19,11 @@ public class UserService {
     }
 
     public User createNewUser(User user) {
-        return userDao.insertUser(user);
+        if (Objects.equals(user.getName(), "") || user.getAge() <= 0) {
+            return null;
+        } else {
+            return userDao.insertUser(user);
+        }
     }
 
     public User getUserById(int id) {
